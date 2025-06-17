@@ -277,6 +277,6 @@ const submitForm = async () => {
 
   setTimeout(() => {
     emit('submitted')
-  }, 3000)
+  }, 5000)
 }
 </script>
