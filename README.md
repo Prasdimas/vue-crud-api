@@ -9,7 +9,7 @@ https://my-crud-app-ashy.vercel.app
 
 Running Program 
 
-git clone https://github.com/kurohirofile/my-crud-app.git
+git clone https://github.com/Prasdimas/vue-crud-api.git
 
 cd my-crud-app
 
