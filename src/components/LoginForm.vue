@@ -1,5 +1,6 @@
 <template>
-  <form @submit.prevent="onSubmit"
+  <form
+    @submit.prevent="onSubmit"
     class="w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded shadow-md mx-auto"
   >
     <h2 class="text-2xl font-bold mb-4 text-center text-gray-800 dark:text-gray-200">
@@ -11,9 +12,11 @@
       <input
         v-model="username"
         type="text"
-        required
         class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
+      <p v-if="validationErrors.username" class="text-sm text-red-500">
+        {{ validationErrors.username }}
+      </p>
     </div>
 
     <div class="mb-4">
@@ -22,7 +25,6 @@
         <input
           v-model="password"
           :type="showPassword ? 'text' : 'password'"
-          required
           class="w-full border rounded px-3 py-2 pr-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
@@ -33,6 +35,9 @@
           {{ showPassword ? 'Hide' : 'Show' }}
         </button>
       </div>
+      <p v-if="validationErrors.password" class="text-sm text-red-500">
+        {{ validationErrors.password }}
+      </p>
     </div>
 
     <button
@@ -61,9 +66,12 @@ import Notification from '../components/Notification.vue'
 const username = ref('')
 const password = ref('')
 const loading = ref(false)
-const error = ref('')
 const showPassword = ref(false)
 const notification = ref({ message: '', type: 'success' })
+const validationErrors = ref({
+  username: '',
+  password: '',
+})
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -71,10 +79,24 @@ const authStore = useAuthStore()
 function togglePassword() {
   showPassword.value = !showPassword.value
 }
+function validateInputs() {
+  validationErrors.value.username = ''
+  validationErrors.value.password = ''
 
+  if (username.value.trim().length < 3) {
+    validationErrors.value.username = 'Username minimal 3 karakter.'
+  }
+
+  if (password.value.length < 6) {
+    validationErrors.value.password = 'Password minimal 6 karakter.'
+  }
+
+  return !validationErrors.value.username && !validationErrors.value.password
+}
 async function onSubmit() {
+  if (!validateInputs()) return
+
   loading.value = true
-  error.value = ''
   const success = await authStore.login(username.value, password.value)
   loading.value = false
 
