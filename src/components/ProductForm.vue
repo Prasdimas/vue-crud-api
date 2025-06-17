@@ -21,7 +21,7 @@
     <div>
       <label class="dark:text-white">Category</label>
 <select v-model="form.category" class="border rounded p-2 w-full">
-      <option disabled value="">Pilih Category</option>
+      <option disabled value="">Select Category</option>
       <option v-for="key in filterableProductKeys" :key="key" :value="key">{{ key }}</option>
     </select>
         <p v-if="errors.category" class="text-sm text-red-600">{{ errors.category }}</p>
